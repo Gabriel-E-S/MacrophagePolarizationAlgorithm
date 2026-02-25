@@ -1,0 +1,37 @@
+Th1;M1;IFN-gamma
+Th2;M1;IFN-gamma
+Th3;M1;TNF-alpha
+Th4;M1;TNF-alpha
+Th5;M1;IL-6
+Th6;M1;IL-6
+Th7;M1;IL-17
+Th8;M1;IL-17
+Th9;M1;IL-12
+Th10;M1;IL-23
+Th11;Th1;IL-12
+Th12;Th1;IL-12
+Th13;Th1;IL-12
+Th14;Th17;IL-23
+Th2;M2;IL-4
+Mastocyte;M2;IL-4
+Th2;M2;IL-13
+Mastocyte;M2;IL-13
+Treg;M2;IL-10
+TCD4+;Treg;TGF-beta
+TCD8+;Treg;TGF-beta
+M2;Th2;IL-10
+Mastocyte;Th2;IL-4
+Th17;Neutrophil;IL-17
+Th2;Eosinophil;IL-5
+Th1;B cell;IFN-gamma
+Th2;B cell;IL-4
+Treg;DC;IL-10
+DC;Treg;IL-10
+DC;Treg;TGF-beta
+M2;Fibroblast;TGF-beta
+Th1;TCD8+;IL-2
+Th2;Mastocyte;IL-9
+Th17;EC;IL-22
+EC;DC;TSLP
+B cell;MC;IL-10
+ILC3;EC;IL-22
