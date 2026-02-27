@@ -1,0 +1,56 @@
+Th1;M1;IFN-gamma
+NK;M1;IFN-gamma
+Th1;M1;TNF-alpha
+Neutrophil;M1;TNF-alpha
+Th17;M1;IL-6
+DC;M1;IL-6
+Th17;M1;IL-17
+Neutrophil;M1;IL-17
+DC;M1;IL-12
+DC;M1;IL-23
+M1;Th1;IL-12
+M2;Th1;IL-12
+DC;Th1;IL-12
+DC;Th17;IL-23
+Th2;M2;IL-4
+Mastocyte;M2;IL-4
+Th2;M2;IL-13
+Mastocyte;M2;IL-13
+Treg;M2;IL-10
+TCD4+;Treg;TGF-beta
+TCD8+;Treg;TGF-beta
+M2;Th2;IL-10
+Mastocyte;Th2;IL-4
+Th17;Neutrophil;IL-17
+Th2;Eosinophil;IL-5
+Th1;B cell;IFN-gamma
+Th2;B cell;IL-4
+Treg;DC;IL-10
+DC;Treg;IL-10
+DC;Treg;TGF-beta
+M2;Fibroblast;TGF-beta
+Th1;TCD8+;IL-2
+Th2;Mastocyte;IL-9
+Th17;EC;IL-22
+EC;DC;TSLP
+B cell;MC;IL-10
+ILC3;EC;IL-22
+Damaged cell;M1;HMGB1
+Damaged cell;M1;TNF-alpha
+Damaged cell;Neutrophil;Calcium
+Damaged cell;Monocyte;Calcium
+Damaged cell;Neutrophil;Zinc
+Damaged cell;Monocyte;Zinc
+Damaged cell;M1;Calcium
+Damaged cell;M2;Calcium
+Damaged cell;M1;Zinco
+Damaged cell;M2;Zinco
+Damaged cell;M2;Adenosine
+Damaged cell;M2;IL-8
+Damaged cell;M1;Uric Acid
+Damaged cell;M1;Caspase-1
+Damaged cell;M1;NLRP3 Inflammasome
+Damaged cell;M1;IL-18
+Damaged cell;M1;IL-1beta
+Stressed cell;M1;HSP70
+Stressed cell;M2;HSP90
