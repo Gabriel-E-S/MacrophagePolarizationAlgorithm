@@ -1,4 +1,4 @@
-#Objetive: to automatically generate the RME of all vertices and edges of a 
+#Objective: to automatically generate the RME of all vertices and edges of a 
 #given multigraph.
 
 #install the following packages: igraph, Matrix
@@ -58,63 +58,63 @@ V(ge)[F]$color<-"red"
 
 is.connected(ge, mode="strong")
 
-tkplot(ge, edge.label=E(ge)$name) #verificação gráfica do grafo com environment
+tkplot(ge, edge.label=E(ge)$name) #graphical verification of the graph with environment
 
 g<-ge #the protocol uses the g graph for calculations
 
-# Generating the standart flux vector #
+# Generating the standard flux vector #
 
-A <- as_adjacency_matrix(g) # transforma o grafo em matriz de adjacencia 0 E 1
+A <- as_adjacency_matrix(g) # transforms the graph into an adjacency matrix: 0 and 1
 
-D <- degree(g,mode=c("out"))# um vetor que tem a informação do grau de saida dos vertices
+D <- degree(g,mode=c("out")) # a vector that contains information about the out-degree of the vertices
 
-P<-degree(g, mode=c("in")) #vetor de graus de entrada
+P<-degree(g, mode=c("in")) # in-degree vector
 
-J <- length(V(g)) #cria um indice para varredura das colunas
+J <- length(V(g)) #Creates an index to scan the columns
 
-I <- length(V(g))  #cria um indice para varredura das linhas
+I <- length(V(g))  # creates a index to scan the lines
 
 for(i in 1:I){v<-D[i];
 
-for(j in 1:J){A[i,j]<-A[i,j]/v} # transforma a matriz de adjacencia em matriz de transição
+for(j in 1:J){A[i,j]<-A[i,j]/v} #  transforms the adjacency matrix into a transition matrix.
 
 }
 
 A #this is a row-stochastic matrix, because sum(i,)=1.
 
-mysub <- function(x) {sub(",",".",x)} #função para mudar separador decimal
+mysub <- function(x) {sub(",",".",x)} # function to change decimal separator
 
-mydata <- (apply(A, 2, mysub )) #aplicão de função de mudança de separador decimal
+mydata <- (apply(A, 2, mysub )) # function to change decimal separator
 
-rownames(A)<-NULL  #retira o rotulo das linhas
+rownames(A)<-NULL  #remove the label from the lines
 
-colnames(A)<-NULL #retira o rotulo das colunas
+colnames(A)<-NULL #remove the label from the columns
 
-A[is.nan(A)] = 0 #troca NAN por 0
+A[is.nan(A)] = 0 # changes NAN into 0
 
-# até aqui a matriz a é a matriz de transição dinamica do grafo g
+# up to here matrix A is the dynamic transition matrix of graph g
 
 B <- t(A) #this is a column-stochastic matrix, because sum(,j)=1.
 
-e <- eigen(B)  # autovalores e autovetores
+e <- eigen(B)  # eigenvalues and eigenvectors
 
-v <-e$vectors[,1] #autovetor de valor 1
+v <-e$vectors[,1] #eigenvector with value 1
 
-av <- abs(v) #transforma os valores em absoluto
+av <- abs(v) #transforms values to absolute
 
-cv <- sum(av) #soma de todas as componentes de av
+cv <- sum(av) #sum of all components of av
 
-c <- 1/cv  #coeficiente de normalização
+c <- 1/cv  #normalization coefficient
 
-standart <- c*av  #autovetor normalizado sum(vc) = 1
+standart <- c*av  #normalized eigenvector sum(vc) = 1
 
-standart<-as.vector.data.frame(standart) # transforma o vetor normalizado em matriz
+standart<-as.vector.data.frame(standart) # transforms the normalized vector into a matrix
 
-agents<-V(g)$name #atribui novamente os nomes (nam era função do R)
+agents<-V(g)$name #assigns names again (nam was an R function)
 
-agents<-as.vector.data.frame(agents) #transformamos os rótulos em matriz
+agents<-as.vector.data.frame(agents) #we transform the labels into a matrix
 
-flux<-cbind(agents, standart) #juntamos os fluxos (vc) com seus nomes (nam)
+flux<-cbind(agents, standart) #we join the fluxes (vc) with their names (nam)
 
 print(flux) #this is the standart flux of cell's activation
 
@@ -160,7 +160,7 @@ for(i in 1:I){
   
   M <- length(V(gko)) #index to run over all columns
   
-  N <- length(V(gko))  #cria um indice para varredura das linhas
+  N <- length(V(gko))  #creates an index to scan the rows
   
   for(n in 1:N){v<-D[n];
   
@@ -170,39 +170,39 @@ for(i in 1:I){
   
   A # the sum of rows must be 1 (sum(A[i,])) == 1
   
-  mysub <- function(x) {sub(",",".",x)} #função para mudar separador decimal
+  mysub <- function(x) {sub(",",".",x)} #function to change decimal separator
   
-  mydata <- (apply(A, 2, mysub )) #aplicão de função de mudança de separador decimal
+  mydata <- (apply(A, 2, mysub )) #application of function to change decimal separator
   
-  rownames(A)<-NULL  #retira o rotulo das linhas
+  rownames(A)<-NULL  #removes row labels
   
-  colnames(A)<-NULL #retira o rotulo das colunas
+  colnames(A)<-NULL #removes column labels
   
-  A[is.nan(A)] = 0 #troca NAN por 0
+  A[is.nan(A)] = 0 #changes NAN to 0
   
-  # até aqui a matriz a é a matriz de transição dinamica do grafo g
+  # up to here matrix A is the dynamic transition matrix of graph g
   
-  B <- t(A) # transpomos a matriz A em B
+  B <- t(A) # we transpose matrix A into B
   
-  e <- eigen(B)  # autovalores e autovetores
+  e <- eigen(B)  # eigenvalues and eigenvectors
   
-  v <-e$vectors[,1] #autovetor de valor 1
+  v <-e$vectors[,1] #eigenvector with value 1
   
-  av <- abs(v) #transforma os valores em absoluto
+  av <- abs(v) #transforms values to absolute
   
-  cv <- sum(av) #soma de todas as componentes de av
+  cv <- sum(av) #sum of all components of av
   
-  c <- 1/cv  #coeficiente de normalização
+  c <- 1/cv  #normalization coefficient
   
-  KO <- c*av  #autovetor normalizado sum(vc) = 1
+  KO <- c*av  #normalized eigenvector sum(vc) = 1
   
   if((i-1)==0){fko<-append(KO, 0); fko<-replace(fko, c(1, I), fko[c(I, 1)])}
   
-  else{fko<-append(KO, 0, after=i-1)} #trocar essa função after pelo índice#
+  else{fko<-append(KO, 0, after=i-1)} #replace this 'after' function with the index#
   
-  dif<-standart-fko #vetor diferença de fluxos
+  dif<-standart-fko #flux difference vector
   
-  K<-length(dif) #contador de cálculos de mi
+  K<-length(dif) #counter for mi calculations
   
   for(k in 1:K){if(isFALSE(dif[k]>0)==FALSE){CellsKO[k,2]<-CellsKO[k,2]+(dif[k]/(standart[k]*length(dif)))
   
@@ -216,7 +216,7 @@ for(i in 1:I){
   
   else{
     
-    CellsKO[i,2]<-(count_components(gko, mode=c("strong")))/I #número de classes comunicantes dividido pelo total de possíveis
+    CellsKO[i,2]<-(count_components(gko, mode=c("strong")))/I #number of communicating classes divided by total possible
     
     CellsKO[i,3]<-"Not Connected"
     
@@ -228,7 +228,7 @@ for(i in 1:I){
 
 CellsKO <- CellsKO[rownames(CellsKO) != "Environment", ] #remove row of environment
 
-CellsKO <- CellsKO[order(CellsKO$RME, decreasing = TRUE), ] #descreasing order
+CellsKO <- CellsKO[order(CellsKO$RME, decreasing = TRUE), ] #decreasing order
 
 CellsKO$Cells <- NULL #remove Cells row
 
@@ -276,7 +276,7 @@ for(i in 1:I){
   
   M <- length(V(gko)) #index to run over all columns
   
-  N <- length(V(gko))  #cria um indice para varredura das linhas
+  N <- length(V(gko))  #creates an index to scan the rows
   
   for(n in 1:N){v<-D[n];
   
@@ -286,35 +286,35 @@ for(i in 1:I){
   
   A # the sum of rows must be 1 (sum(A[i,])) == 1
   
-  mysub <- function(x) {sub(",",".",x)} #função para mudar separador decimal
+  mysub <- function(x) {sub(",",".",x)} #function to change decimal separator
   
-  mydata <- (apply(A, 2, mysub )) #aplicão de função de mudança de separador decimal
+  mydata <- (apply(A, 2, mysub )) #application of function to change decimal separator
   
-  rownames(A)<-NULL  #retira o rotulo das linhas
+  rownames(A)<-NULL  #removes row labels
   
-  colnames(A)<-NULL #retira o rotulo das colunas
+  colnames(A)<-NULL #removes column labels
   
-  A[is.nan(A)] = 0 #troca NAN por 0
+  A[is.nan(A)] = 0 #changes NAN to 0
   
-  # até aqui a matriz a é a matriz de transição dinamica do grafo g
+  # up to here matrix A is the dynamic transition matrix of graph g
   
-  B <- t(A) # transpomos a matriz A em B
+  B <- t(A) # we transpose matrix A into B
   
-  e <- eigen(B)  # autovalores e autovetores
+  e <- eigen(B)  # eigenvalues and eigenvectors
   
-  v <-e$vectors[,1] #autovetor de valor 1
+  v <-e$vectors[,1] #eigenvector with value 1
   
-  av <- abs(v) #transforma os valores em absoluto
+  av <- abs(v) #transforms values to absolute
   
-  cv <- sum(av) #soma de todas as componentes de av
+  cv <- sum(av) #sum of all components of av
   
-  c <- 1/cv  #coeficiente de normalização
+  c <- 1/cv  #normalization coefficient
   
-  KO <- c*av  #autovetor normalizado sum(KO) = 1
+  KO <- c*av  #normalized eigenvector sum(KO) = 1
   
-  dif<-standart-KO #vetor diferença de fluxos
+  dif<-standart-KO #flux difference vector
   
-  K<-length(V(gko)) #contador de cálculos de mi
+  K<-length(V(gko)) #counter for mi calculations
   
   for(k in 1:K){if(isFALSE(dif[k]>0)==FALSE){SignalKO[i,2]<-SignalKO[i,2]+(dif[k]/(standart[k]*length(dif)))
   
@@ -328,7 +328,7 @@ for(i in 1:I){
   
   else{
     
-    SignalKO[i,2]<-(count_components(gko, mode=c("strong")))/I #número de classes comunicantes dividido pelo total de possíveis
+    SignalKO[i,2]<-(count_components(gko, mode=c("strong")))/I #number of communicating classes divided by total possible
     
     SignalKO[i,3]<-"Not Connected"
     
@@ -347,4 +347,3 @@ SignalKO <- SignalKO[order(SignalKO$RME, decreasing = TRUE), ] #decreasing order
 print(SignalKO) #check if environment is removed before saving
 
 write.table(SignalKO, file="SignalKO.csv", col.names = NA, sep=";", dec=".")
-
