@@ -2,7 +2,7 @@
 
 Below is the algorithm in R language that simulates the construction of a complex signaling
 network followed by theoretical knockouts and the calculation of the RME (Relative Mean Error)
-index proposed by Miranda (2016).
+index proposed by Miranda *et. al.*(2016).
 
 # Usage Tutorial
 
@@ -74,11 +74,23 @@ of the intact network.
 
 6. Results Export: Saves two reports (CellsKO.csv for vertices and SignalKO.csv for edges), ranking all components from most critical to least critical.
 
+# Statistical Analysis
+
+The statistical analysis was conducted using the R programming language, leveraging the stats, nortest and outliers packages. Based on the RME values obtained from simulations of theoretical knockouts, the resulting dataset was organized into three distinct groups:
+
+1. Cells: RME values corresponding to vertex removal.
+
+2. Signals: RME values associated with edge removal.
+
+3. All: A combination of both.
+
+The statistical tests aim to determine whether the obtained values follow uniform and normal distributions, as well as to identify key regulatory agents within each subset of the system.
+
 
 # Polarização de macrófagos em contextos PAMPS e DAMPS -- Versão em Português
 
 Abaixo segue o algoritmo em linguagem R que simula a construção de uma rede complexa de sinalização seguida dos
-knockouts teóricos e cálculo do índice RME ( Relative Mean Error) proposto por Miranda (2016).
+knockouts teóricos e cálculo do índice RME ( Relative Mean Error) proposto por Miranda *et. al.*(2016).
 
 # Tutorial de Utilização
 
@@ -144,3 +156,15 @@ Depois, ele repete o processo, mas deletando uma aresta (sinal) de cada vez.
 5. Cálculo do Erro (RME): Para cada peça removida, ele compara o novo fluxo da rede com o fluxo padrão original. Essa diferença gera o RME (Relative Mean Error). Quanto maior o RME, mais vital é aquele componente para a estabilidade da rede.
 
 6. Exportação de Resultados: Salva dois relatórios (CellsKO.csv para os vértices e SignalKO.csv para as arestas), ranqueando todos os componentes do mais crítico ao menos crítico.
+
+# Análise Estatística
+
+A análise estatística também foi desenvolvida em linguagem R, fazendo uso dos pacotes *stats*, *nortest* e *outliers*. Com base nos valores de RME obtidos por meio da simulação dos nocautes teóricos, o conjunto de dados resultantes foi organizado em três grupos distintos: 
+
+1. Células: Valores de RME correspondentes a remoção de vértices.
+
+2. Sinais: Valores de RME referentes a remoção de arestas.
+
+3. Todos: Uma combinação de ambos. 
+
+Os testes estatísticos visam identificar se os valores conseguidos compõem uma distribuição uniforme e normal, além de identificar os agentes-chaves dentro de cada conjunto que integra o sistema.
