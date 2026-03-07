@@ -4,47 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Análise de Redes</title>
+
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src="script.js"></script>
 </head>
 <body>
-    
-<section id="introducao-algoritmo">
-    <h1>Plataforma de Análise Topológica de Redes Complexas de Sinalização</h1>
+  <div class="container-principal">
+        
+        <section id="introducao-algoritmo">
+            <h1>Plataforma de Análise Topológica de Redes Complexas de Sinalização</h1>
+            <p>Esta aplicação web fornece uma interface computacional para a execução de algoritmos avançados voltados à análise estrutural de redes complexas de sinalização biológica. A modelagem de sistemas através da teoria dos grafos permite a identificação de vias críticas e a compreensão aprofundada da dinâmica de comunicação inter e intracelular.</p>
+            <p>O núcleo analítico do algoritmo baseia-se na simulação de <strong>nocautes teóricos</strong> — a remoção sistemática e in silico de componentes da rede — conjugada com o cálculo do <strong>Erro Médio Relativo (RME - <em>Relative Mean Error</em>)</strong>, métrica proposta por Miranda <em>et al.</em> (2016).</p> 
+            <p>Esta abordagem metodológica permite quantificar a vulnerabilidade global da rede perante perturbações, avaliando o impacto estrutural da supressão de componentes individuais. O índice RME atua, portanto, como um indicador rigoroso de centralidade e robustez, revelando a importância hierárquica e a criticidade de cada vértice (células ou moléculas) e aresta (interações ou substâncias mediadoras) na manutenção da integridade do fluxo de informação do sistema.</p>
+        </section>
 
-    <p> Esta aplicação web fornece uma interface computacional para a execução de algoritmos avançados voltados
-        à análise estrutural de redes complexas de sinalização biológica. A modelagem de sistemas através da 
-        teoria dos grafos permite a identificação de vias críticas e a compreensão aprofundada da dinâmica de 
-        comunicação inter e intracelular.</p>
+        <section id="tutorial-utilizacao">
+            <h2>Especificações para Entrada de Dados (Tutorial)</h2>
+            <p>Para a correta instanciação do grafo e execução das operações matriciais, a topologia da rede deve ser submetida por meio de um arquivo de texto estruturado em formato <code>.csv</code> (<em>Comma-Separated Values</em>). O parser do algoritmo exige a seguinte padronização rigorosa, composta por exatamente três colunas:</p>
+            <ul>
+                <li><strong>Coluna 1 (Vértice de Origem):</strong> Identificação da célula, proteína ou entidade biológica emissora do sinal.</li>
+                <li><strong>Coluna 2 (Vértice de Destino):</strong> Identificação da célula ou entidade receptora (entidade afetada).</li>
+                <li><strong>Coluna 3 (Aresta/Interação):</strong> Especificação da substância mediadora, metabólito ou natureza da conexão direcional entre os vértices.</li>
+            </ul>
 
-    <p> O núcleo analítico do algoritmo baseia-se na simulação de <strong>nocautes teóricos</strong> — a
-        remoção sistemática e in silico de componentes da rede — conjugada com o cálculo do 
-        <strong>Erro Médio Relativo (RME - <em>Relative Mean Error</em>)</strong>, métrica proposta por 
-        Miranda <em>et al.</em> (2016).</p> 
-    
-    <p> Esta abordagem metodológica permite quantificar a vulnerabilidade global da rede perante perturbações,
-        avaliando o impacto estrutural da supressão de componentes individuais. O índice RME atua, portanto, 
-        como um indicador rigoroso de centralidade e robustez, revelando a importância hierárquica e a 
-        criticidade de cada vértice (células ou moléculas) e aresta (interações ou substâncias mediadoras)
-        na manutenção da integridade do fluxo de informação do sistema.</p>
-</section>
+            <div class="alerta-formatacao">
+                <strong>Aviso Importante de Formatação:</strong> O arquivo não deve conter cabeçalhos (headers) ou metadados adicionais. O delimitador obrigatório entre as colunas deve ser exclusivamente o <strong>ponto e vírgula (<code>;</code>)</strong>. A presença de caracteres anômalos ou colunas extras resultará em falha na validação dos dados.
+            </div>
 
-<section id="tutorial-utilizacao">
-    <h2>Especificações para Entrada de Dados (Tutorial)</h2>
+            <p>Após a submissão e o processamento computacional, a aplicação retornará os arquivos resultantes contendo os scores de RME tabulados, permitindo a imediata interpretação da criticidade topológica da rede inserida.</p>
+        </section>
 
-    <p>Para a correta instanciação do grafo e execução das operações matriciais, a topologia da rede deve ser submetida por meio de um arquivo de texto estruturado em formato <code>.csv</code> (<em>Comma-Separated Values</em>). O parser do algoritmo exige a seguinte padronização rigorosa, composta por exatamente três colunas:</p>
+        <section id="area-upload">
+            <h3>Submissão de Dados</h3>
+            <p>Anexe o arquivo <code>.csv</code> contendo a topologia da rede para iniciar o cálculo do RME.</p>
+            
+            <div class="controles-upload">
+                <input type="file" id="inputCsv" accept=".csv">
+                
+                <button class="botao-primario" onclick="enviarParaAPI()">Calcular e Gerar Grafo</button>
+            </div>
 
-    <ul>
-        <li><strong>Coluna 1 (Vértice de Origem):</strong> Identificação da célula, proteína ou entidade biológica emissora do sinal.</li>
-        <li><strong>Coluna 2 (Vértice de Destino):</strong> Identificação da célula ou entidade receptora (entidade afetada).</li>
-        <li><strong>Coluna 3 (Aresta/Interação):</strong> Especificação da substância mediadora, metabólito ou natureza da conexão direcional entre os vértices.</li>
-    </ul>
+            <div id="mensagemStatus"></div>
+            
+            <div id="areaGrafo">
+                <h4>Visualização da Rede</h4>
+                <img id="imagemGrafo" src="" alt="Grafo da Rede">
+            </div>
+        </section>
 
-    <div class="alerta-formatacao" >
-        <strong>Aviso Importante de Formatação:</strong> 
-        O arquivo não deve conter cabeçalhos (headers) ou metadados adicionais. O delimitador obrigatório entre as colunas deve ser exclusivamente o <strong>ponto e vírgula (<code>;</code>)</strong>. A presença de caracteres anômalos ou colunas extras resultará em falha na validação dos dados.
     </div>
-
-    <p>Após a submissão e o processamento computacional, a aplicação retornará os arquivos resultantes contendo os scores de RME tabulados, permitindo a imediata interpretação da criticidade topológica da rede inserida.</p>
-</section>
-
 </body>
 </html>
