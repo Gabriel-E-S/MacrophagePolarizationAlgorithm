@@ -113,12 +113,20 @@ ul li {
 
 #area_grafo {
     margin-top: 30px;
-    display: none;
+    display: none; 
+    text-align: center; 
+    width: 100%;
 }
 
 #imagem_grafo {
-    max-width: 100%;
-    border: 1px solid #eaeaea;
-    padding: 10px;
-    background-color: #fcfcfc;
+max-width: 100%;
+max-height: 450px; 
+width: auto; 
+border: 1px solid #eaeaea;
+border-radius: 8px;
+padding: 10px;
+background-color: #ffffff;
+box-sizing: border-box;
+display: block;
+margin: 15px auto 0 auto;
 }
