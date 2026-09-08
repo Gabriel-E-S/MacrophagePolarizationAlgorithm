@@ -9,7 +9,7 @@ library(igraph, Matrix)
 
 #Load external file input (three column matrix: signal, receiver, mediator)
 
-B<-read.table('C:/Users/PC-Pedro/Documents/R/file(base).csv', sep=";", header=FALSE)
+B<-read.table('U:/home/gabriel/github/MacrophagePolarizationAlgorithm/data/2026research/breastCancerNetwork.csv', sep=";", header=FALSE)
 
 base<-as.matrix(B); base<-unname(base) #prep matrix and remove all headers
 
@@ -94,7 +94,7 @@ A[is.nan(A)] = 0 # changes NAN into 0
 
 # up to here matrix A is the dynamic transition matrix of graph g
 
-B <- t(A) #this is a column-stochastic matrix, because sum(,j)=1.
+B <- t(as.matrix(A)) #this is a column-stochastic matrix, because sum(,j)=1.
 
 e <- eigen(B)  # eigenvalues and eigenvectors
 
@@ -182,7 +182,7 @@ for(i in 1:I){
   
   # up to here matrix A is the dynamic transition matrix of graph g
   
-  B <- t(A) # we transpose matrix A into B
+  B <- t(as.matrix(A)) # we transpose matrix A into B
   
   e <- eigen(B)  # eigenvalues and eigenvectors
   
@@ -298,7 +298,7 @@ for(i in 1:I){
   
   # up to here matrix A is the dynamic transition matrix of graph g
   
-  B <- t(A) # we transpose matrix A into B
+  B <- t(as.matrix(A))
   
   e <- eigen(B)  # eigenvalues and eigenvectors
   

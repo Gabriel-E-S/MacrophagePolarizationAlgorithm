@@ -1,196 +1,156 @@
 # ------------------------------------------------------------------------------
 # Objetive: to automatically analyse which values of RME are superior.
-
 # We begin this analysis after the KO routine has been applied.
-
 # This script was made specifically for macrophage polarization.
 # ------------------------------------------------------------------------------
 
-# Kolmogorov-Smirnov Test: compare data with the uniform distribution.
+# 1. DATA SETUP ----------------------------------------------------------------
 
-# Create vectors for statistical analysis.
+# Extracting numerical values (ensure these are correct)
+cells_rme <- CellsKO$RME
+signal_rme <- SignalKO$RME 
+all_rme <- c(cells_rme, signal_rme)
 
-cells<-c(CellsKO[,2]) ; is.vector(cells) 
+# Creating a unified table to retrieve names for the "all" group later
+Tabela_Cells <- data.frame(Nome = rownames(CellsKO), RME = cells_rme, Tipo = "Cells")
+Tabela_Signal <- data.frame(Nome = SignalKO[,1], RME = signal_rme, Tipo = "Signals")
+Tabela_All <- rbind(Tabela_Cells, Tabela_Signal)
 
-signal<-c(SignalKO[,2]);  is.vector(signal)
-
-all<-c(cells, signal); is.vector(all)
-
-# Compare in terms of uniform dist.
-
-ks_cells<- ks.test(cells, "punif"); print(ks_cells) 
-
-ks_signal<- ks.test(signal, "punif"); print(ks_signal)
-
-ks_all<- ks.test(all, "punif"); print(ks_all)
-
-# Interpretation: if p-value < 0.05, the data is not uniform.
 # ------------------------------------------------------------------------------
+# 2. INITIAL UNIFORMITY AND NORMALITY TESTS ------------------------------------
+
+# Kolmogorov-Smirnov Test: compare data with the uniform distribution.
+ks_cells <- ks.test(cells_rme, "punif"); print(ks_cells) 
+ks_signal <- ks.test(signal_rme, "punif"); print(ks_signal)
+ks_all <- ks.test(all_rme, "punif"); print(ks_all)
+# Interpretation: if p-value < 0.05, the data is not uniform.
 
 # Anderson-Darling Test: this test works like the KS, but is more sensible
 # to deviations in the tails of the distribution.
 
 # Install and load nortest package.
-
-install.packages("nortest")   
-
+# install.packages("nortest") # Leave commented if already installed
 library(nortest)
 
 # Check for normality.
-
-ad_cells<- ad.test(cells); print(ad_cells)
-
-ad_signal<-ad.test(signal); print(ad_signal)
-
-ad_all<-ad.test(all); print(ad_all)
-
+ad_cells <- ad.test(cells_rme); print(ad_cells)
+ad_signal <- ad.test(signal_rme); print(ad_signal)
+ad_all <- ad.test(all_rme); print(ad_all)
 # Interpretation: if p-value < 0.05, the data is not normal.
+
 # ------------------------------------------------------------------------------
+# 3. DISCOVERING SUPERIOR VALUES BY PERCENTILE ---------------------------------
 
-# Discovering which values are superior for CellsKO.
-
-cells<-sort(cells, decreasing = T)
-
-p90c <- quantile(cells, 0.90)  # 90th percentile.
-p95c <- quantile(cells, 0.95)  # 95th percentile.
+# -- Discovering which values are superior for CellsKO --
+p90c <- quantile(cells_rme, 0.90) # 90th percentile.
+p95c <- quantile(cells_rme, 0.95) # 95th percentile.
 
 # Values above the 90th percentile. 
-
-superiores_p90c <- cells[cells > p90c]
-print(superiores_p90c)
+cat("\n--- Cells above 90th Percentile ---\n")
+print(rownames(CellsKO[cells_rme > p90c, ]))
 
 # Values above the 95th percentile. 
+cat("\n--- Cells above 95th Percentile ---\n")
+print(rownames(CellsKO[cells_rme > p95c, ]))
 
-superiores_p95c <- cells[cells > p95c]
-print(superiores_p95c)
-# ------------------------------------------------------------------------------
 
-# Discovering which values are superior for signalKO.
-
-signal<-sort(signal, decreasing = T)
-
-p90s <- quantile(signal, 0.90)  # 90th percentile.
-p95s <- quantile(signal, 0.95)  # 95th percentile.
+# -- Discovering which values are superior for signalKO --
+p90s <- quantile(signal_rme, 0.90) # 90th percentile.
+p95s <- quantile(signal_rme, 0.95) # 95th percentile.
 
 # Values above the 90th percentile.
-
-superiores_p90s <- signal[signal > p90s]
-print(superiores_p90s)
+cat("\n--- Signals above 90th Percentile ---\n")
+print(SignalKO[signal_rme > p90s, 1]) # Extract column 1, which contains the names
 
 # Values above the 95th percentile.
+cat("\n--- Signals above 95th Percentile ---\n")
+print(SignalKO[signal_rme > p95s, 1])
 
-superiores_p95s <- signal[signal > p95s]
-print(superiores_p95s)
-# ------------------------------------------------------------------------------
 
-# Discovering which values are superior for allKO.
-
-all<-sort(all, decreasing = T)
-
-p90a <- quantile(all, 0.90)  # 90th percentile.
-p95a <- quantile(all, 0.95)  # 95th percentile.
+# -- Discovering which values are superior for allKO --
+p90a <- quantile(all_rme, 0.90) # 90th percentile.
+p95a <- quantile(all_rme, 0.95) # 95th percentile.
 
 # Values above the 90th percentile.
-
-superiores_p90a <- all[all > p90a]
-print(superiores_p90a)
+cat("\n--- Union (Signals and Cells) above 90th Percentile ---\n")
+# Using Tabela_All here. Displaying Name and Type to identify each entry.
+print(Tabela_All[Tabela_All$RME > p90a, c("Nome", "Tipo")])
 
 # Values above the 95th percentile.
+cat("\n--- Union (Signals and Cells) above 95th Percentile ---\n")
+print(Tabela_All[Tabela_All$RME > p95a, c("Nome", "Tipo")])
 
-superiores_p95a <- all[all > p95a]
-print(superiores_p95a)
 # ------------------------------------------------------------------------------
-
+# 4. OUTLIER DETECTION USING TUKEY'S METHOD (IQR) ------------------------------
 # Outlier detection using Tukey's Method (IQR - Interquartile Range).
 
-# Analysis for CellsKO.
-
-Q1c <- quantile(cells, 0.25)  # 1st quartile (25%).
-Q3c <- quantile(cells, 0.75)  # 3rd quartile (75%).
-IQR_valuec <- Q3c - Q1c       # Interquartile Range.
+# -- Analysis for CellsKO --
+Q1c <- quantile(cells_rme, 0.25) # 1st quartile (25%).
+Q3c <- quantile(cells_rme, 0.75) # 3rd quartile (75%).
+IQR_valuec <- Q3c - Q1c          # Interquartile Range.
 
 # Define the upper limit to detect extreme outliers.
-
 limite_superiorc <- Q3c + 1.5 * IQR_valuec
 
 # Values considered higher. 
+cat("\n--- Cells Outliers (Tukey's Method) ---\n")
+print(rownames(CellsKO[cells_rme > limite_superiorc, ]))
 
-superiores_iqrc <- cells[cells > limite_superiorc]
-print(superiores_iqrc)
 
-# Analysis for SignalKO.
-
-Q1s <- quantile(signal, 0.25)  # 1st quartile (25%).
-Q3s <- quantile(signal, 0.75)  # 3rd quartile (75%).
-IQR_values <- Q3s - Q1s        # Interquartile Range.
+# -- Analysis for SignalKO --
+Q1s <- quantile(signal_rme, 0.25) # 1st quartile (25%).
+Q3s <- quantile(signal_rme, 0.75) # 3rd quartile (75%).
+IQR_values <- Q3s - Q1s           # Interquartile Range.
 
 # Define the upper limit to detect extreme outliers.
-
 limite_superiors <- Q3s + 1.5 * IQR_values
 
 # Values considered higher.
+cat("\n--- Signals Outliers (Tukey's Method) ---\n")
+print(SignalKO[signal_rme > limite_superiors, 1])
 
-superiores_iqrs <- signal[signal > limite_superiors]
-print(superiores_iqrs)
 
-# Analysis for allKO.
-
-Q1a <- quantile(all, 0.25)  # 1st quartile (25%). 
-Q3a <- quantile(all, 0.75)  # 3rd quartile (75%).
-IQR_valuea <- Q3a - Q1a     # Interquartile Range.
+# -- Analysis for allKO --
+Q1a <- quantile(all_rme, 0.25)  # 1st quartile (25%). 
+Q3a <- quantile(all_rme, 0.75)  # 3rd quartile (75%).
+IQR_valuea <- Q3a - Q1a         # Interquartile Range.
 
 # Define the upper limit to detect extreme outliers.
-
 limite_superiora <- Q3a + 1.5 * IQR_valuea
 
 # Values considered higher.
+cat("\n--- Union Outliers (Tukey's Method) ---\n")
+print(Tabela_All[Tabela_All$RME > limite_superiora, c("Nome", "Tipo")])
 
-superiores_iqra <- all[all > limite_superiora]
-print(superiores_iqra)
 # ------------------------------------------------------------------------------
+# 5. OTHER TESTS AND GRAPHICAL ANALYSIS ----------------------------------------
 
 # Normality test in order to use other measures.
 
 # Shapiro-Wilk Test (best for small/medium samples).
-
-shapiro.test(cells)
-
-shapiro.test(signal)
-
-shapiro.test(all)
-
+shapiro.test(cells_rme)
+shapiro.test(signal_rme)
+shapiro.test(all_rme)
 # Interpretation: if p-value < 0.05, the data is not normal.
-# ------------------------------------------------------------------------------
 
 # Graphical analysis.
+hist(cells_rme, breaks = 10, probability = TRUE, col = "lightblue", main = "Cells KO Histogram")
+lines(density(cells_rme), col = "red", lwd = 2) # Add density curve.
 
-hist(cells, breaks = 10, probability = TRUE, col = "lightblue", main = "Cells KO Histogram")
-lines(density(cells), col = "red", lwd = 2)  # Add density curve.
+hist(signal_rme, breaks = 10, probability = TRUE, col = "lightblue", main = "Signal KO Histogram")
+lines(density(signal_rme), col = "red", lwd = 2) # Add density curve.
 
-hist(signal, breaks = 10, probability = TRUE, col = "lightblue", main = "Signal KO Histogram")
-lines(density(signal), col = "red", lwd = 2)  # Add density curve.
-
-hist(all, breaks = 10, probability = TRUE, col = "lightblue", main = "All KO Histogram")
-lines(density(all), col = "red", lwd = 2)  # Add density curve.
-# ------------------------------------------------------------------------------
+hist(all_rme, breaks = 10, probability = TRUE, col = "lightblue", main = "All KO Histogram")
+lines(density(all_rme), col = "red", lwd = 2) # Add density curve.
 
 # Kolmogorov-Smirnov Test (KS) for normality.
-
-ks.test(cells, "pnorm", mean = mean(cells), sd = sd(cells))
-
-ks.test(signal, "pnorm", mean = mean(signal), sd = sd(signal))
-
-ks.test(all, "pnorm", mean = mean(all), sd = sd(all))
-
+ks.test(cells_rme, "pnorm", mean = mean(cells_rme), sd = sd(cells_rme))
+ks.test(signal_rme, "pnorm", mean = mean(signal_rme), sd = sd(signal_rme))
+ks.test(all_rme, "pnorm", mean = mean(all_rme), sd = sd(all_rme))
 # Interpretation: if p-value < 0.05, the data is not normal.
-# ------------------------------------------------------------------------------
 
 # Lilliefors Test.
-
-lillie.test(cells)
-
-lillie.test(signal)
-
-lillie.test(all)
-
+lillie.test(cells_rme)
+lillie.test(signal_rme)
+lillie.test(all_rme)
 # Interpretation: if p-value < 0.05, the data is not normal.
