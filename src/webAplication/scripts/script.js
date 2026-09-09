@@ -1,3 +1,14 @@
+const inputCsv = document.getElementById("inputCsv");
+const nomeArquivo = document.getElementById("nomeArquivo");
+
+inputCsv.addEventListener("change", () => {
+    if (inputCsv.files.length > 0) {
+        nomeArquivo.textContent = inputCsv.files[0].name;
+    } else {
+        nomeArquivo.textContent = "Nenhum arquivo selecionado";
+    }
+});
+
 async function enviarParaAPI() {
     const input = document.getElementById('inputCsv');
     const status = document.getElementById('mensagemStatus');

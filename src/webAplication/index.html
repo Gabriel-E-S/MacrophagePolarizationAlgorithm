@@ -1,57 +1,311 @@
 <!DOCTYPE html>
-<html lang="pt_br">
+
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Redes</title>
 
-    <link rel="stylesheet" href="styles/styles.css">
-    <script src="scripts/script.js"></script>
+<meta name="description" content="Plataforma de análise topológica de redes complexas de sinalização biológica">
+
+<title>Análise Topológica de Redes</title>
+
+<link rel="stylesheet" href="styles/styles.css">
+<script src="scripts/script.js" defer></script>
+
 </head>
-<body>
-  <div class="container-principal">
-        
-        <section id="introducao-algoritmo">
-            <h1>Plataforma de Análise Topológica de Redes Complexas de Sinalização</h1>
-            <p>Esta aplicação web fornece uma interface computacional para a execução de algoritmos avançados voltados à análise estrutural de redes complexas de sinalização biológica. A modelagem de sistemas através da teoria dos grafos permite a identificação de vias críticas e a compreensão aprofundada da dinâmica de comunicação inter e intracelular.</p>
-            <p>O núcleo analítico do algoritmo baseia-se na simulação de <strong>nocautes teóricos</strong> — a remoção sistemática e in silico de componentes da rede — conjugada com o cálculo do <strong>Erro Médio Relativo (RME - <em>Relative Mean Error</em>)</strong>, métrica proposta por Miranda <em>et al.</em> (2016).</p> 
-            <p>Esta abordagem metodológica permite quantificar a vulnerabilidade global da rede perante perturbações, avaliando o impacto estrutural da supressão de componentes individuais. O índice RME atua, portanto, como um indicador rigoroso de centralidade e robustez, revelando a importância hierárquica e a criticidade de cada vértice (células ou moléculas) e aresta (interações ou substâncias mediadoras) na manutenção da integridade do fluxo de informação do sistema.</p>
-        </section>
 
-        <section id="tutorial-utilizacao">
-            <h2>Especificações para Entrada de Dados (Tutorial)</h2>
-            <p>Para a correta instanciação do grafo e execução das operações matriciais, a topologia da rede deve ser submetida por meio de um arquivo de texto estruturado em formato <code>.csv</code> (<em>Comma-Separated Values</em>). O parser do algoritmo exige a seguinte padronização rigorosa, composta por exatamente três colunas:</p>
-            <ul>
-                <li><strong>Coluna 1 (Vértice de Origem):</strong> Identificação da célula, proteína ou entidade biológica emissora do sinal.</li>
-                <li><strong>Coluna 2 (Vértice de Destino):</strong> Identificação da célula ou entidade receptora (entidade afetada).</li>
-                <li><strong>Coluna 3 (Aresta/Interação):</strong> Especificação da substância mediadora, metabólito ou natureza da conexão direcional entre os vértices.</li>
-            </ul>
+<body>
+
+<header class="cabecalho">
+    <div class="cabecalho-conteudo">
+        <span class="etiqueta">ANÁLISE COMPUTACIONAL</span>
+
+        <h1>
+            Plataforma de Análise Topológica
+            <span>de Redes Complexas</span>
+        </h1>
+
+        <p>
+            Uma ferramenta computacional para análise estrutural,
+            vulnerabilidade e criticidade em redes de sinalização biológica.
+        </p>
+    </div>
+</header>
+
+
+<main class="container-principal">
+
+    <!-- INTRODUÇÃO -->
+    <section id="introducao-algoritmo" class="card">
+
+        <div class="titulo-secao">
+            <span class="numero-secao">01</span>
+
+            <div>
+                <span class="rotulo-secao">VISÃO GERAL</span>
+                <h2>Sobre a análise</h2>
+            </div>
+        </div>
+
+        <div class="conteudo-texto">
+
+            <p>
+                Esta aplicação web fornece uma interface computacional para
+                a execução de algoritmos voltados à análise estrutural de
+                redes complexas de sinalização biológica.
+            </p>
+
+            <p>
+                A modelagem de sistemas através da teoria dos grafos permite
+                a identificação de vias críticas e a compreensão aprofundada
+                da dinâmica de comunicação inter e intracelular.
+            </p>
+
+            <p>
+                O núcleo analítico do algoritmo baseia-se na simulação de
+                <strong>nocautes teóricos</strong> — a remoção sistemática
+                e <em>in silico</em> de componentes da rede — conjugada com
+                o cálculo do
+                <strong>Erro Médio Relativo (RME -
+                <em>Relative Mean Error</em>)</strong>, métrica proposta
+                por Miranda <em>et al.</em> (2016).
+            </p>
+
+            <p>
+                Esta abordagem metodológica permite quantificar a
+                vulnerabilidade global da rede perante perturbações,
+                avaliando o impacto estrutural da supressão de componentes
+                individuais.
+            </p>
+
+            <div class="destaque-metodologia">
+                <div class="icone-destaque">RME</div>
+
+                <div>
+                    <strong>Erro Médio Relativo</strong>
+
+                    <p>
+                        O índice RME atua como um indicador de centralidade
+                        e robustez, permitindo identificar a importância
+                        hierárquica e a criticidade de cada vértice e aresta
+                        na manutenção do fluxo de informação do sistema.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- TUTORIAL -->
+    <section id="tutorial-utilizacao" class="card">
+
+        <div class="titulo-secao">
+            <span class="numero-secao">02</span>
+
+            <div>
+                <span class="rotulo-secao">CONFIGURAÇÃO</span>
+                <h2>Especificações para entrada de dados</h2>
+            </div>
+        </div>
+
+        <div class="conteudo-texto">
+
+            <p>
+                Para a correta instanciação do grafo e execução das
+                operações matriciais, a topologia da rede deve ser submetida
+                por meio de um arquivo de texto estruturado no formato
+                <code>.csv</code>
+                (<em>Comma-Separated Values</em>).
+            </p>
+
+            <p>
+                O parser do algoritmo exige a seguinte padronização,
+                composta por três colunas:
+            </p>
+
+
+            <div class="estrutura-csv">
+
+                <div class="csv-item">
+                    <span class="csv-numero">01</span>
+
+                    <div>
+                        <strong>Vértice de Origem</strong>
+                        <p>
+                            Identificação da célula, proteína ou entidade
+                            biológica emissora do sinal.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="csv-item">
+                    <span class="csv-numero">02</span>
+
+                    <div>
+                        <strong>Vértice de Destino</strong>
+                        <p>
+                            Identificação da célula ou entidade receptora
+                            afetada pela interação.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="csv-item">
+                    <span class="csv-numero">03</span>
+
+                    <div>
+                        <strong>Aresta / Interação</strong>
+                        <p>
+                            Especificação da substância mediadora,
+                            metabólito ou natureza da conexão direcional.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
 
             <div class="alerta-formatacao">
-                <strong>Aviso Importante de Formatação:</strong> O arquivo não deve conter cabeçalhos (headers) ou metadados adicionais. O delimitador obrigatório entre as colunas deve ser exclusivamente o <strong>ponto e vírgula (<code>;</code>)</strong>. A presença de caracteres anômalos ou colunas extras resultará em falha na validação dos dados.
+
+                <div class="alerta-icone">!</div>
+
+                <div>
+                    <strong>Aviso importante de formatação</strong>
+
+                    <p>
+                        O arquivo não deve conter cabeçalhos ou informações
+                        adicionais. O delimitador obrigatório entre as
+                        colunas deve ser exclusivamente o
+                        <strong>ponto e vírgula (<code>;</code>)</strong>.
+                        A presença de caracteres anômalos ou colunas extras
+                        resultará em falha na validação dos dados.
+                    </p>
+                </div>
+
             </div>
 
-            <p>Após a submissão e o processamento computacional, a aplicação retornará os arquivos resultantes contendo os scores de RME tabulados, permitindo a imediata interpretação da criticidade topológica da rede inserida.</p>
-        </section>
 
-        <section id="area-upload">
-            <h3>Submissão de Dados</h3>
-            <p>Anexe o arquivo <code>.csv</code> contendo a topologia da rede para iniciar o cálculo do RME.</p>
-            
-            <div class="controles-upload">
-                <input type="file" id="inputCsv" accept=".csv">
-                
-                <button class="botao-primario" onclick="enviarParaAPI()">Calcular e Gerar Grafo</button>
+            <p>
+                Após a submissão e o processamento computacional, a aplicação
+                retornará os arquivos resultantes contendo os scores de RME
+                tabulados, permitindo a interpretação da criticidade
+                topológica da rede inserida.
+            </p>
+
+        </div>
+    </section>
+
+
+    <!-- UPLOAD -->
+    <section id="area-upload" class="card card-upload">
+
+        <div class="titulo-secao">
+            <span class="numero-secao">03</span>
+
+            <div>
+                <span class="rotulo-secao">PROCESSAMENTO</span>
+                <h2>Submissão de dados</h2>
+            </div>
+        </div>
+
+
+        <p class="descricao-upload">
+            Anexe o arquivo <code>.csv</code> contendo a topologia da rede
+            para iniciar o cálculo do RME.
+        </p>
+
+
+        <div class="upload-area">
+
+            <div class="upload-icone">
+                ↑
             </div>
 
-            <div id="mensagemStatus"></div>
-            
-            <div id="areaGrafo">
-                <h4>Visualização da Rede</h4>
-                <img id="imagemGrafo" src="" alt="Grafo da Rede">
-            </div>
-        </section>
+            <h3>Selecione o arquivo da rede</h3>
 
-    </div>
+            <p>
+                Formato aceito: <strong>.csv</strong>
+            </p>
+
+            <label for="inputCsv" class="label-arquivo">
+                Selecionar arquivo
+            </label>
+
+            <input
+                class="input"
+                type="file"
+                id="inputCsv"
+                accept=".csv"
+            >
+
+            <span id="nomeArquivo" class="nome-arquivo">
+                Nenhum arquivo selecionado
+            </span>
+
+        </div>
+
+
+        <button
+            class="botao-primario"
+            type="button"
+            onclick="enviarParaAPI()"
+        >
+            <span>Calcular e gerar grafo</span>
+            <span class="seta">→</span>
+        </button>
+
+
+        <div id="mensagemStatus" class="mensagem-status"></div>
+
+
+        <!-- GRAFO -->
+        <div id="areaGrafo" class="area-grafo">
+
+            <div class="cabecalho-grafo">
+
+                <div>
+                    <span class="rotulo-secao">RESULTADO</span>
+                    <h3>Visualização da rede</h3>
+                </div>
+
+                <span class="status-grafo">
+                    Processado
+                </span>
+
+            </div>
+
+
+            <div class="grafo-container">
+
+                <img
+                    id="imagemGrafo"
+                    src=""
+                    alt="Visualização do grafo da rede"
+                >
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="rodape">
+
+    <p>
+        Plataforma de Análise Topológica de Redes Complexas
+    </p>
+
+    <span>
+        Análise computacional de redes de sinalização biológica
+    </span>
+
+</footer>
+
 </body>
 </html>
