@@ -1,40 +1,40 @@
 TRMs;Celulas tumorais de mama;IL-10
-Macrofagos FOLR2+;TCD8+;Antigenio (ex vivo)
+Macrofago FOLR2+;TCD8+;Antigenio (ex vivo)
 TAM;TCD8+;Arginase 1
 TAM;Celulas MCF-7;BMP-2
-TAM;Fibroblastos residentes na mama;CCL18
+TAM;Fibroblast;CCL18
 TAM (M2like);Monocitos;CCL2
 TAM;Treg;CCL22
 TAM;Celulas MDA-MB-231 (TNBC);CCL22
 TAM (M2like);Treg;CCL22
 TRMs;Celulas tumorais de mama;CCL8
 TAM (M2like);Celulas MDA-MB-231 e BT549;CCR2
-M1;Celulas de cancer de mama 4T1;IL-6
+M1;Celulas tumorais de mama;IL-6
 TAM;TCD8+;Colageno
-Macrofagos;Celulas de cancer de mama;Exossomos
-Celulas de cancer de mama;Macrofagos;miR-183-5p
-M1;Celulas de cancer de mama 4T1;TNF-alfa
-M1;Celulas de cancer de mama 4T1;iNOS
-TAM (M2like);Celulas de cancer de mama;IL-10
+Macrofago;Celulas tumorais de mama;Exossomos
+Celulas tumorais de mama;Macrofago;miR-183-5p
+M1;Celulas tumorais de mama;TNF-alpha
+M1;Celulas tumorais de mama;iNOS
+TAM (M2like);Celulas tumorais de mama;IL-10
 TAM;TCD8+;IL-10
 Treg;TCD8+;IL-10
 Treg;NK;IL-10
-M1;Celulas tumorais;IL-12
+M1;Celula Tumoral;IL-12
 TAM;BCSCs;IL-6
 TCD4+;TAM;IL-4
 TAM (M2like);Celulas MDA-MB-231 e BT549;MCP-1
-Macrofagos;Celulas de cancer de mama;miR-223
-Macrofagos ativados por IL-4 (M2);Celulas de adenocarcinoma de mama (SKBR3 e MDA-MB-231);miR-223
-M1;Celulas tumorais;oxido nítrico
-Macrofagos;Celulas T citotoxica;PD-L1
-Celulas de cancer de mama;Celula T citotoxica;PD-L1
-TRMs;Celulas tumorais de mama;TGF- beta
+Macrofago;Celulas tumorais de mama;miR-223
+M2;Celulas de adenocarcinoma de mama (SKBR3 e MDA-MB-231);miR-223
+M1;Celulas tumorais de mama;oxido nítrico
+Macrofago;Celulas T citotoxica;PD-L1
+Celulas tumorais de mama;Celula T citotoxica;PD-L1
+TRMs;Celulas tumorais de mama;TGF-beta
 Treg;TCD8+;TGF-beta
 Treg;NK;TGF-beta
-TRMs;Celulas tumorais de mama;TNF- alfa
-M1;Celulas tumorais;TNFalfa
-Celulas de adenocarcinoma de mama;Macrofagos;VEGF
-TAM (M2like);Celulas de cancer de mama;VEGF
+TRMs;Celulas tumorais de mama;TNF-alpha
+M1;Celulas tumorais de mama;TNF-alpha
+Celulas tumorais de mama;Macrofago;VEGF
+TAM (M2like);Celulas tumorais de mama;VEGF
 Th1;M1;IFN-gamma
 Th2;M1;IFN-gamma
 Th3;M1;TNF-alpha
@@ -45,7 +45,7 @@ Th7;M1;IL-17
 Th8;M1;IL-17
 Th9;M1;IL-12
 Th10;M1;IL-23
-Th11;Th1;IL-12
+Th11;Th1;IL-23
 Th12;Th1;IL-12
 Th13;Th1;IL-12
 Th14;Th17;IL-23
@@ -72,3 +72,17 @@ Th17;EC;IL-22
 EC;DC;TSLP
 B cell;MC;IL-10
 ILC3;EC;IL-22
+Celulas tumorais de mama;Macrofago (GPR132);Lactato
+Celula Tumoral (TNBC);Macrofago CD163+;25HC
+Celulas tumorais de mama;Celula Mieloide;GM-CSF
+Macrofago;TCD8+;Arginase 1
+Celulas tumorais de mama;Macrofago (CSF-1R);CSF-1
+TAM;Celula Tumoral (EGFR);EGF
+Celula Tumoral (ativada ErbB3/CXCR4);Macrofago (CSF-1R);CSF-1
+Macrofago;Celula Endotelial Vascular;VEGF-A
+Celula Tumoral;Macrofago;Exossomo circ-0100519
+Celulas tumorais de mama;Macrofago;Lactato
+TAM;Celulas-Tronco de Câncer de Mama (BCSCs);IL-6
+TAM (M2like);Celula Tumoral;27-HC
+Celulas tumorais de mama;Macrofago;Lactato
+Celulas tumorais de mama;Macrofago;Exossomo miR-99b-3p

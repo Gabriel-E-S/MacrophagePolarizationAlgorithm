@@ -10,6 +10,7 @@ library(igraph, Matrix)
 #Load external file input (three column matrix: signal, receiver, mediator)
 
 B<-read.table('U:/home/gabriel/github/MacrophagePolarizationAlgorithm/data/2026research/breastCancerNetwork.csv', sep=";", header=FALSE)
+#B<-read.table('U:/home/gabriel/github/MacrophagePolarizationAlgorithm/data/BaseNetwork.csv', sep=";", header=FALSE)
 
 base<-as.matrix(B); base<-unname(base) #prep matrix and remove all headers
 
