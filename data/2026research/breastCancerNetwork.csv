@@ -25,7 +25,7 @@ TCD4+;TAM;IL-4
 TAM (M2like);Celulas MDA-MB-231 e BT549;MCP-1
 Macrofago;Celulas tumorais de mama;miR-223
 M2;Celulas de adenocarcinoma de mama (SKBR3 e MDA-MB-231);miR-223
-M1;Celulas tumorais de mama;oxido nítrico
+M1;Celulas tumorais de mama;oxido nitrico
 Macrofago;Celulas T citotoxica;PD-L1
 Celulas tumorais de mama;Celula T citotoxica;PD-L1
 TRMs;Celulas tumorais de mama;TGF-beta
@@ -81,6 +81,6 @@ TAM;Celula Tumoral (EGFR);EGF
 Celula Tumoral (ativada ErbB3/CXCR4);Macrofago (CSF-1R);CSF-1
 Macrofago;Celula Endotelial Vascular;VEGF-A
 Celula Tumoral;Macrofago;Exossomo circ-0100519
-TAM;Celulas-Tronco de Câncer de Mama (BCSCs);IL-6
+TAM;Celulas-Tronco de Cancer de Mama (BCSCs);IL-6
 TAM (M2like);Celula Tumoral;27-HC
 Celulas tumorais de mama;Macrofago;Exossomo miR-99b-3p
