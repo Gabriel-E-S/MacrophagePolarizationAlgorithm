@@ -15,7 +15,7 @@ async function enviarParaAPI() {
     const areaGrafo = document.getElementById('areaGrafo');
     const imgGrafo = document.getElementById('imagemGrafo');
 
-    if (input.isDefaultNamespace.length === 0){
+    if (input.files.length === 0){
         status.innerText = "Erro, por favor coloque o arquivo .csv antes de clicar em enviar" ;
         status.style.color = "#c0392b"
         return;
@@ -31,11 +31,10 @@ async function enviarParaAPI() {
 
     try {
         // Dispara a requisição para a sua API em R (Back-end)
-        const resposta = await fetch("http://127.0.0.1:8000/processar", {
+        const resposta = await fetch("/analise-redes-biologicas/api/processar", {
             method: "POST",
             body: dadosFormulario
         });
-
         if (!resposta.ok) {
             throw new Error("Erro na comunicação com o servidor R.");
         }
