@@ -8,7 +8,7 @@ RUN apt-get update -qq && apt-get install -y \
     libxml2-dev
 
 # Instala os pacotes do R
-RUN R -e "install.packages(c('igraph', 'Matrix', 'base64enc'))"
+RUN R -e "install.packages(c('igraph', 'Matrix', 'base64enc', 'nortest'))"
 
 # Copia a nossa API para dentro do container
 COPY plumber.R /app/plumber.R

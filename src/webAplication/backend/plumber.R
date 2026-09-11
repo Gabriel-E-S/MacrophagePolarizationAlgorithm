@@ -2,6 +2,7 @@ library(plumber)
 library(igraph)
 library(Matrix)
 library(base64enc)
+library(nortest) # Nova biblioteca para o teste de Anderson-Darling
 
 #* @filter cors
 function(res) {
@@ -15,7 +16,7 @@ function(res) {
 #* @parser multi
 function(req, res) {
   
-  # Lê o arquivo que chega da interface web
+  # 1. LEITURA
   arquivo <- req$body$arquivo_usuario
   
   if (is.list(arquivo) && !is.null(arquivo$value)) {
@@ -32,16 +33,11 @@ function(req, res) {
     stop("O formato do arquivo recebido não foi compreendido.")
   }
   
-  # ==========================================================
-  # INÍCIO DO CÓDIGO DA PESQUISA - LÓGICA ORIGINAL PRESERVADA
-  # ==========================================================
-  
+  # 2. CÁLCULO ORIGINAL DA PESQUISA
   B <- read.table(text = texto_csv, sep = ";", header = FALSE)
   base <- as.matrix(B); base <- unname(base) 
-  
   edges <- base[,-c(3)] 
   g <- graph_from_edgelist(edges, directed=T)
-  
   arrows <- c(base[,3]) 
   E(g)$name <- arrows 
   V(g)$color <- "lightblue"
@@ -86,34 +82,28 @@ function(req, res) {
   agents <- as.vector.data.frame(agents) 
   flux <- cbind(agents, standart_df) 
   
-  # --- Knock-outs generalized/optimized for VERTICES ---
-  
+  # --- Knock-outs VERTICES ---
   J <- NULL; I <- length(V(g)) 
   Cells <- V(g) 
   RME <- rep(0, length(V(g))) 
   Connectivity <- rep("not analysed", length(V(g))) 
   Numb.Comm.classes <- rep("not analysed", length(V(g))) 
   CellsKO <- data.frame(Cells, RME, Connectivity, Numb.Comm.classes)
-  
   I <- length(V(g)) 
   
   for(i in 1:I){
     gko <- delete_vertices(g, V(g)[i]); 
-    
     if(is_connected(gko, mode=c("strong"))==TRUE){
       CellsKO[i,4]<-1;
       CellsKO[i,3]<-"Connected"
-      
       A_ko <- as.matrix(get.adjacency(gko)) 
       D_ko <- degree(gko,mode=c("out")) 
       M <- length(V(gko)) 
       N <- length(V(gko))  
-      
       for(n in 1:N){
         v_ko <- D_ko[n];
         for(m in 1:M){A_ko[n,m]<-A_ko[n,m]/v_ko} 
       }
-      
       mysub <- function(x) {sub(",",".",x)} 
       mydata <- (apply(A_ko, 2, mysub )) 
       rownames(A_ko)<-NULL  
@@ -144,7 +134,6 @@ function(req, res) {
           CellsKO[k,2] <- CellsKO[k,2]+(abs(dif[k])/(fko[k]*length(dif)))
         }
       }
-      
     } else {
       CellsKO[i,2] <- (count_components(gko, mode=c("strong")))/I 
       CellsKO[i,3] <- "Not Connected"
@@ -156,11 +145,9 @@ function(req, res) {
   CellsKO <- CellsKO[order(CellsKO$RME, decreasing = TRUE), ] 
   CellsKO$Cells <- NULL 
   
-  # --- Knock-outs generalized/optimized for EDGES ---
-  
+  # --- Knock-outs EDGES ---
   arr <- as.matrix(table(E(g)$name)); V_names <- row.names(arr)
   J <- NULL; I_edges <- length(V_names) 
-  
   Signal <- V_names 
   RME <- rep(0, length(V_names)) 
   Connectivity <- rep("not analysed", length(V_names)) 
@@ -169,21 +156,17 @@ function(req, res) {
   
   for(i in 1:I_edges){
     gko <- delete_edges(g, E(g)[name == V_names[i]]); 
-    
     if(is_connected(gko, mode=c("strong"))==TRUE){
       SignalKO[i,4]<-1;
       SignalKO[i,3]<-"Connected"
-      
       A_ko <- as.matrix(get.adjacency(gko)) 
       D_ko <- degree(gko,mode=c("out")) 
       M <- length(V(gko)) 
       N <- length(V(gko))  
-      
       for(n in 1:N){
         v_ko<-D_ko[n];
         for(m in 1:M){A_ko[n,m]<-A_ko[n,m]/v_ko} 
       }
-      
       mysub <- function(x) {sub(",",".",x)} 
       mydata <- (apply(A_ko, 2, mysub )) 
       rownames(A_ko)<-NULL  
@@ -220,26 +203,59 @@ function(req, res) {
   SignalKO <- SignalKO[order(SignalKO$RME, decreasing = TRUE), ] 
   
   # ==========================================================
-  # FIM DO CÓDIGO DA PESQUISA - INÍCIO DA RESPOSTA WEB
+  # 3. ANÁLISE ESTATÍSTICA 
   # ==========================================================
+  cells_rme <- CellsKO$RME
+  signal_rme <- SignalKO$RME 
+  all_rme <- c(cells_rme, signal_rme)
   
-  # Utilizando write.table exatamente com a sua formatação (sep=";")
+  # Calculando as métricas e empacotando em uma lista para a web
+  estatisticas_texto <- list(
+    # Percentil 95
+    cells_p95 = as.character(rownames(CellsKO[cells_rme > quantile(cells_rme, 0.95), , drop = FALSE])),
+    signal_p95 = as.character(SignalKO[signal_rme > quantile(signal_rme, 0.95), 1]),
+    
+    # Outliers (Método de Tukey)
+    cells_outliers = as.character(rownames(CellsKO[cells_rme > (quantile(cells_rme, 0.75) + 1.5 * (quantile(cells_rme, 0.75) - quantile(cells_rme, 0.25))), , drop = FALSE])),
+    signal_outliers = as.character(SignalKO[signal_rme > (quantile(signal_rme, 0.75) + 1.5 * (quantile(signal_rme, 0.75) - quantile(signal_rme, 0.25))), 1])
+  )
+  
+  # Geração da Imagem com os 3 Histogramas Estatísticos lado a lado
+  caminho_hist <- tempfile(fileext = ".png")
+  png(caminho_hist, width = 1200, height = 400, res = 100)
+  par(mfrow = c(1, 3), mar = c(4, 4, 3, 1)) # Divide a imagem em 3 colunas
+  
+  hist(cells_rme, breaks = 10, probability = TRUE, col = "lightblue", main = "Cells KO Histogram", xlab="RME")
+  lines(density(cells_rme), col = "red", lwd = 2) 
+  
+  hist(signal_rme, breaks = 10, probability = TRUE, col = "lightblue", main = "Signal KO Histogram", xlab="RME")
+  lines(density(signal_rme), col = "red", lwd = 2) 
+  
+  hist(all_rme, breaks = 10, probability = TRUE, col = "lightblue", main = "All KO Histogram", xlab="RME")
+  lines(density(all_rme), col = "red", lwd = 2)
+  dev.off()
+  
+  imagem_hist_base64 <- base64encode(caminho_hist)
+  
+  # ==========================================================
+  # 4. PREPARAÇÃO DA RESPOSTA WEB
+  # ==========================================================
   csv1_texto <- paste(capture.output(write.table(CellsKO, col.names = NA, sep=";", dec=".")), collapse = "\n")
   csv2_texto <- paste(capture.output(write.table(SignalKO, col.names = NA, sep=";", dec=".")), collapse = "\n")
   
-  # Salva a imagem em um arquivo temporário sem abrir janelas interativas
   caminho_imagem <- tempfile(fileext = ".png")
   png(caminho_imagem, width = 900, height = 700, res = 100)
   par(mar = c(1, 1, 3, 1))
   plot(g, vertex.size = 15, vertex.color = V(g)$color, vertex.label.color = "black", vertex.label.cex = 0.8, edge.label = E(g)$name, edge.label.cex = 0.7, edge.arrow.size = 0.4, edge.color = "gray", main = "Topologia da Rede (RME)")
   dev.off()
-  
   imagem_em_texto <- base64encode(caminho_imagem)
   
-  # Retorno no formato compreendido pela aplicação Web
+  # Retorna tudo junto para a interface!
   list(
     arquivo1 = csv1_texto,
     arquivo2 = csv2_texto,
-    grafo = imagem_em_texto
+    grafo = imagem_em_texto,
+    estatisticas_dados = estatisticas_texto,     # <- Novos dados aqui
+    grafico_estatistico = imagem_hist_base64     # <- Novos gráficos aqui
   )
 }

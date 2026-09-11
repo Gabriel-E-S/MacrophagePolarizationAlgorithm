@@ -290,6 +290,30 @@
 
         </div>
 
+        <!-- ANÁLISE ESTATÍSTICA (Novo Bloco) -->
+        <div id="areaEstatistica" class="area-grafo" style="margin-top: 40px; padding-top: 30px;">
+            <div class="cabecalho-grafo">
+                <div>
+                    <span class="rotulo-secao">ANÁLISE ESTATÍSTICA  </span>
+                    <h3>Distribuição e Outliers</h3>
+                </div>
+            </div>
+
+            <!-- Textos Estatísticos -->
+            <div class="destaque-metodologia" style="flex-direction: column; gap: 10px;">
+                <p><strong>Células Críticas (> P95):</strong> <span id="txtCellsP95"></span></p>
+                <p><strong>Sinais Críticos (> P95):</strong> <span id="txtSignalP95"></span></p>
+                <hr style="width: 100%; border: 0; border-top: 1px solid #e2e8f0;">
+                <p><strong>Células Extremas (Outliers Tukey):</strong> <span id="txtCellsOut"></span></p>
+                <p><strong>Sinais Extremos (Outliers Tukey):</strong> <span id="txtSignalOut"></span></p>
+            </div>
+
+            <!-- Histogramas -->
+            <div class="grafo-container" style="margin-top: 20px;">
+                <img id="imagemEstatistica" src="" alt="Histogramas Estatísticos">
+            </div>
+        </div>
+
     </section>
 
 </main>
