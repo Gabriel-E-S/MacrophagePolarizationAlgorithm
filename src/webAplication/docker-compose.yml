@@ -4,11 +4,6 @@ services:
   backend:
     build: ./backend
     container_name: api-r-biologicas
-
-  frontend:
-    build: ./frontend
-    container_name: apache-biologicas
     ports:
-      - "80:80" 
-    depends_on:
-      - backend
+      - "8000:8000" # Libera a porta 8000 da VM para acessar o container
+    restart: unless-stopped # Faz o container voltar sozinho se a VM reiniciar
